@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF to Handwritten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h2>Convert PDF to Handwritten</h2>
+        <form method="POST" enctype="multipart/form-data" id="convertForm">
+            <div class="form-group">
+                <label for="pdf">Select PDF:</label>
+                <input type="file" id="pdf" name="pdf" accept=".pdf" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Select Handwriting Style:</label>
+                <div class="font-selector">
+                    <select id="fontSelect" name="font" required>
+                        <option value="">Select a font...</option>
+                        <option value="Dancing Script">Dancing Script</option>
+                        <option value="Caveat">Caveat</option>
+                        <option value="Satisfy">Satisfy</option>
+                        <option value="Pacifico">Pacifico</option>
+                        <option value="Indie Flower">Indie Flower</option>
+                        <option value="Architects Daughter">Architects Daughter</option>
+                        <option value="Shadows Into Light">Shadows Into Light</option>
+                        <option value="Kalam">Kalam</option>
+                        <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                        <option value="Homemade Apple">Homemade Apple</option>
+                    </select>
+                    <div class="font-preview">
+                        <p id="previewText">The quick brown fox jumps over the lazy dog</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Preview Options:</label>
+                <div class="preview-options">
+                    <div class="option">
+                        <label for="fontSize">Font Size:</label>
+                        <input type="range" id="fontSize" min="20" max="60" value="30">
+                        <span id="fontSizeValue">30px</span>
+                    </div>
+                    <div class="option">
+                        <label for="inkColor">Ink Color:</label>
+                        <input type="color" id="inkColor" value="#000000">
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" value="Convert" id="convertBtn">
+        </form>
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Converting your PDF... Please wait</p>
+        </div>
+    </div>
+
+    <script>
+        const fontSelect = document.getElementById('fontSelect');
+        const previewText = document.getElementById('previewText');
+        const fontSize = document.getElementById('fontSize');
+        const fontSizeValue = document.getElementById('fontSizeValue');
+        const inkColor = document.getElementById('inkColor');
+
+        function updatePreview() {
+            const selectedFont = fontSelect.value;
+            if (selectedFont) {
+                previewText.style.fontFamily = selectedFont;
+                previewText.style.fontSize = `${fontSize.value}px`;
+                previewText.style.color = inkColor.value;
+            }
+        }
+
+        fontSelect.addEventListener('change', updatePreview);
+        fontSize.addEventListener('input', () => {
+            fontSizeValue.textContent = `${fontSize.value}px`;
+            updatePreview();
+        });
+        inkColor.addEventListener('input', updatePreview);
+
+        document.getElementById('convertForm').addEventListener('submit', function() {
+            document.querySelector('.loading').classList.add('active');
+        });
+    </script>
+</body>
+</html>

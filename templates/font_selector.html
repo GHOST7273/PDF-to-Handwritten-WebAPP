@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Handwriting Font</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">333333333
+        <h2>Select Your Handwriting Style</h2>
+        <div class="font-grid">
+            {% for font in fonts %}
+            <div class="font-card" data-font="{{ font.file }}">
+                <img src="{{ url_for('static', filename=font.preview) }}" alt="{{ font.name }} preview">
+                <h3>{{ font.name }}</h3>
+                <button class="select-font-btn" onclick="selectFont('{{ font.file }}')">Select This Font</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function selectFont(fontFile) {
+            // Store the selected font in localStorage
+            localStorage.setItem('selectedFont', fontFile);
+            // Redirect to the main page
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html> 

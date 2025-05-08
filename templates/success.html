@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversion Successful</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container success-container">
+        <h2>Conversion Successful!</h2>
+        
+        <!-- Combined PDF Download -->
+        <div class="combined-pdf-section">
+            <h3>Download Complete Document</h3>
+            <a href="{{ files[-1] }}" class="download-link combined-pdf-link" download>
+                Download Complete PDF
+            </a>
+        </div>
+
+        <!-- Individual Pages -->
+        <div class="individual-pages-section">
+            <h3>Download Individual Pages</h3>
+            <div class="download-grid">
+                {% for file in files[:-1] %}
+                <div class="download-item">
+                    <a href="{{ file }}" class="download-link" download>
+                        Download Page {{ loop.index }}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
