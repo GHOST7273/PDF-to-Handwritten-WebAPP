@@ -19,8 +19,5 @@ pip install -r requirements.txt
 python app.py
 ```
 
-## Deployment
-This application is deployed on Render.
-
 ## License
 MIT 
