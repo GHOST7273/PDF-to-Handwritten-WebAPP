@@ -22,6 +22,7 @@ FONTS_FOLDER = os.path.join(BASE_DIR, 'static', 'fonts')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 app.config['FONTS_FOLDER'] = FONTS_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
@@ -305,7 +306,7 @@ def index():
                 if combine_images_to_pdf(image_paths, output_pdf_path):
                     output_files.append(f"/download/handwritten_document.pdf")
 
-                return render_template('success.html', files=output_files)
+            return render_template('success.html', files=output_files)
         
         return render_template('index.html')
     except Exception as e:
@@ -317,4 +318,6 @@ def download_file(filename):
     return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use environment variable for port
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
