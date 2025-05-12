@@ -421,3 +421,31 @@ input[type="color"] {
         grid-template-columns: 1fr;
     }
 } 
+
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap : 10px;
+    margin-bottom: 20px;
+}
+
+.mode-toggle button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #ddd;
+}
+
+.mode-toggle button.active {
+    background-color: #aaa;
+    color: white;
+}
+
+.mode-section {
+        display:none;
+}
+
+.mode-section.active{
+    display: block;
+}

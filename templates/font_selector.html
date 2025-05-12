@@ -4,18 +4,32 @@
     <title>Select Handwriting Font</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose from various handwriting fonts for your document">
 </head>
-<body>
-    <div class="container">333333333
-        <h2>Select Your Handwriting Style</h2>
-        <div class="font-grid">
+<body data-bs-theme="dark">
+    <div class="container">
+        <h2 class="mt-4 mb-4">Select Your Handwriting Style</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for font in fonts %}
-            <div class="font-card" data-font="{{ font.file }}">
-                <img src="{{ url_for('static', filename=font.preview) }}" alt="{{ font.name }} preview">
-                <h3>{{ font.name }}</h3>
-                <button class="select-font-btn" onclick="selectFont('{{ font.file }}')">Select This Font</button>
+            <div class="col">
+                <div class="card h-100" data-font="{{ font.file }}">
+                    <img src="{{ url_for('static', filename=font.preview) }}" alt="{{ font.name }} preview" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ font.name }}</h5>
+                        <button class="btn btn-primary w-100" onclick="selectFont('{{ font.file }}')">Select This Font</button>
+                    </div>
+                </div>
             </div>
             {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Back to Main Page</a>
+        </div>
+        
+        <!-- Space for future ad placement -->
+        <div class="ad-container mt-4">
+            <!-- Google AdSense will be placed here -->
         </div>
     </div>
 
@@ -28,4 +42,4 @@
         }
     </script>
 </body>
-</html> 
+</html>

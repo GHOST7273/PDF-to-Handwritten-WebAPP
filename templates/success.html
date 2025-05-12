@@ -2,33 +2,50 @@
 <html>
 <head>
     <title>Conversion Successful</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Successfully converted file - download your handwritten document">
 </head>
-<body>
-    <div class="container success-container">
-        <h2>Conversion Successful!</h2>
+<body data-bs-theme="dark">
+    <div class="container text-center">
+        <h2 class="mt-4 mb-4">Conversion Successful!</h2>
         
         <!-- Combined PDF Download -->
-        <div class="combined-pdf-section">
-            <h3>Download Complete Document</h3>
-            <a href="{{ files[-1] }}" class="download-link combined-pdf-link" download>
-                Download Complete PDF
+        <div class="card mb-4 p-4">
+            <h3 class="mb-3">Download Complete Document</h3>
+            <a href="{{ files[-1] }}" class="btn btn-primary btn-lg" download>
+                <i class="bi bi-file-earmark-arrow-down"></i> Download Complete PDF
             </a>
         </div>
 
         <!-- Individual Pages -->
-        <div class="individual-pages-section">
-            <h3>Download Individual Pages</h3>
-            <div class="download-grid">
+        {% if files|length > 1 %}
+        <div class="card p-4">
+            <h3 class="mb-3">Download Individual Pages</h3>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for file in files[:-1] %}
-                <div class="download-item">
-                    <a href="{{ file }}" class="download-link" download>
-                        Download Page {{ loop.index }}
-                    </a>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <a href="{{ file }}" class="btn btn-outline-success" download>
+                                Download Page {{ loop.index }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Back to Main Page</a>
+        </div>
+        
+        <!-- Space for future ad placement -->
+        <div class="ad-container mt-4">
+            <!-- Google AdSense will be placed here -->
         </div>
     </div>
 </body>

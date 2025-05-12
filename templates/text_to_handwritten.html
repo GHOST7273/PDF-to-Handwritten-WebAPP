@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text to Handwritten</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert custom text to handwritten style with various font options">
+</head>
+<body data-bs-theme="dark">
+    <div class="container">
+        <h2 class="mt-4 mb-4">Convert Text to Handwritten</h2>
+        
+        {% if error %}
+        <div class="alert alert-danger mb-4">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <form method="POST" id="textForm">
+            <div class="form-group mb-3">
+                <label for="custom_text" class="form-label">Enter your text:</label>
+                <textarea id="custom_text" name="custom_text" rows="10" placeholder="Type or paste your text here..." class="form-control" required></textarea>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="form-label">Select Handwriting Style:</label>
+                <div class="font-selector">
+                    <select id="fontSelect" name="font" class="form-select" required>
+                        <option value="">Select a font...</option>
+                        <option value="Dancing Script">Dancing Script</option>
+                        <option value="Caveat">Caveat</option>
+                        <option value="Satisfy">Satisfy</option>
+                        <option value="Pacifico">Pacifico</option>
+                        <option value="Indie Flower">Indie Flower</option>
+                        <option value="Architects Daughter">Architects Daughter</option>
+                        <option value="Shadows Into Light">Shadows Into Light</option>
+                        <option value="Kalam">Kalam</option>
+                        <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                        <option value="Homemade Apple">Homemade Apple</option>
+                    </select>
+                    <div class="font-preview mt-2 p-3 border rounded">
+                        <p id="previewText">The quick brown fox jumps over the lazy dog</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Preview Options:</label>
+                <div class="preview-options p-3 border rounded">
+                    <div class="option mb-2">
+                        <label for="fontSize" class="form-label">Font Size:</label>
+                        <input type="range" id="fontSize" name="fontSize" min="20" max="60" value="30" class="form-range">
+                        <span id="fontSizeValue">30px</span>
+                    </div>
+                    <div class="option">
+                        <label for="inkColor" class="form-label">Ink Color:</label>
+                        <input type="color" id="inkColor" name="inkColor" value="#000000" class="form-control-color">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" id="convertBtn">Convert to Handwritten</button>
+        </form>
+        
+        <div class="loading d-none text-center my-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Converting your text... Please wait</p>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Back to Main Page</a>
+        </div>
+        
+        <!-- Space for future ad placement -->
+        <div class="ad-container mt-4">
+            <!-- Google AdSense will be placed here -->
+        </div>
+    </div>
+
+    <script>
+        const fontSelect = document.getElementById('fontSelect');
+        const previewText = document.getElementById('previewText');
+        const fontSize = document.getElementById('fontSize');
+        const fontSizeValue = document.getElementById('fontSizeValue');
+        const inkColor = document.getElementById('inkColor');
+        const customText = document.getElementById('custom_text');
+
+        function updatePreview() {
+            const selectedFont = fontSelect.value;
+            if (selectedFont) {
+                previewText.style.fontFamily = selectedFont;
+                previewText.style.fontSize = `${fontSize.value}px`;
+                previewText.style.color = inkColor.value;
+                
+                // Update preview text with first 50 characters from user input
+                const userText = customText.value;
+                if (userText.length > 0) {
+                    const previewTextContent = userText.length > 50 
+                        ? userText.substring(0, 50) + '...' 
+                        : userText;
+                    previewText.textContent = previewTextContent;
+                } else {
+                    previewText.textContent = "The quick brown fox jumps over the lazy dog";
+                }
+            }
+        }
+
+        fontSelect.addEventListener('change', updatePreview);
+        fontSize.addEventListener('input', () => {
+            fontSizeValue.textContent = `${fontSize.value}px`;
+            updatePreview();
+        });
+        inkColor.addEventListener('input', updatePreview);
+        customText.addEventListener('input', updatePreview);
+
+        document.getElementById('textForm').addEventListener('submit', function() {
+            document.querySelector('.loading').classList.remove('d-none');
+        });
+    </script>
+</body>
+</html>

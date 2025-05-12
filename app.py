@@ -1,32 +1,39 @@
 # app.py
 import os
+import re
+import uuid
+import logging
 from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 import fitz  # PyMuPDF
 from PIL import Image, ImageDraw, ImageFont
-import requests  # Add this for downloading fonts
+import requests
 from io import BytesIO
-import re
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Get the absolute path to the directory containing this script
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-app = Flask(__name__, 
-           template_folder=os.path.join(BASE_DIR, 'templates'),
-           static_folder=os.path.join(BASE_DIR, 'static'))
+app = Flask(__name__)
 
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 OUTPUT_FOLDER = os.path.join(BASE_DIR, 'output')
 FONTS_FOLDER = os.path.join(BASE_DIR, 'static', 'fonts')
+FONT_PREVIEWS_FOLDER = os.path.join(BASE_DIR, 'static', 'font_previews')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 app.config['FONTS_FOLDER'] = FONTS_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['SECRET_KEY'] = os.environ.get("SESSION_SECRET", "default_secret_key")
 
+# Create necessary directories
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 os.makedirs(FONTS_FOLDER, exist_ok=True)
+os.makedirs(FONT_PREVIEWS_FOLDER, exist_ok=True)
 
 def clean_text(text):
     """Clean and format the extracted text"""
@@ -64,14 +71,14 @@ def pdf_to_text(pdf_path):
                         if text.strip():
                             # Get the x position (indentation)
                             if line_indent is None:
-                                line_indent = span["bbox"][0]  # Use bbox instead of origin
+                                line_indent = span["bbox"][0]
                             line_text += text
                     
                     if line_text.strip():
                         # Check if this is a new paragraph
                         if last_y is not None:
                             # If there's a significant vertical gap, it's a new paragraph
-                            if abs(line["bbox"][1] - last_y) > 20:  # Use bbox instead of origin
+                            if abs(line["bbox"][1] - last_y) > 20:
                                 if current_paragraph:
                                     page_content.append(" ".join(current_paragraph))
                                     current_paragraph = []
@@ -83,7 +90,7 @@ def pdf_to_text(pdf_path):
                             line_text = " " * indent_spaces + line_text
                         
                         current_paragraph.append(line_text)
-                        last_y = line["bbox"][1]  # Use bbox instead of origin
+                        last_y = line["bbox"][1]
         
         # Add the last paragraph
         if current_paragraph:
@@ -131,7 +138,7 @@ def download_google_font(font_name):
                     f.write(font_file.content)
                 return font_path
     except Exception as e:
-        print(f"Error downloading font {font_name}: {str(e)}")
+        app.logger.error(f"Error downloading font {font_name}: {str(e)}")
     return None
 
 def text_to_handwritten_image(text, font_name, output_path, image_width=800, line_height=40, font_size=30, ink_color="#000000"):
@@ -192,32 +199,30 @@ def text_to_handwritten_image(text, font_name, output_path, image_width=800, lin
         image.save(output_path, quality=95, optimize=True)
         
     except Exception as e:
-        print(f"Error generating image: {str(e)}")
+        app.logger.error(f"Error generating image: {str(e)}")
         raise
 
-# Add this new function to get available fonts
 def get_available_fonts():
     fonts = []
     for font_file in os.listdir(FONTS_FOLDER):
         if font_file.endswith('.ttf'):
-            font_path = os.path.join(FONTS_FOLDER, font_file)
+            font_name = os.path.splitext(font_file)[0]
             try:
                 # Create a preview image for the font
-                preview_path = os.path.join('static', 'font_previews', f"{os.path.splitext(font_file)[0]}.png")
-                if not os.path.exists(os.path.dirname(preview_path)):
-                    os.makedirs(os.path.dirname(preview_path), exist_ok=True)
+                preview_path = os.path.join('font_previews', f"{font_name}.png")
+                full_preview_path = os.path.join(FONT_PREVIEWS_FOLDER, f"{font_name}.png")
                 
                 # Generate preview if it doesn't exist
-                if not os.path.exists(preview_path):
-                    generate_font_preview(font_path, preview_path)
+                if not os.path.exists(full_preview_path):
+                    generate_font_preview(os.path.join(FONTS_FOLDER, font_file), full_preview_path)
                 
                 fonts.append({
-                    'name': os.path.splitext(font_file)[0],
+                    'name': font_name,
                     'file': font_file,
                     'preview': preview_path
                 })
             except Exception as e:
-                print(f"Error processing font {font_file}: {str(e)}")
+                app.logger.error(f"Error processing font {font_file}: {str(e)}")
     return fonts
 
 def generate_font_preview(font_path, output_path, text="The quick brown fox jumps over the lazy dog"):
@@ -235,12 +240,7 @@ def generate_font_preview(font_path, output_path, text="The quick brown fox jump
         # Save the preview
         img.save(output_path)
     except Exception as e:
-        print(f"Error generating preview for {font_path}: {str(e)}")
-
-@app.route('/fonts')
-def font_selector():
-    fonts = get_available_fonts()
-    return render_template('font_selector.html', fonts=fonts)
+        app.logger.error(f"Error generating preview for {font_path}: {str(e)}")
 
 def combine_images_to_pdf(image_paths, output_pdf_path):
     """Combine multiple images into a single PDF file"""
@@ -263,61 +263,116 @@ def combine_images_to_pdf(image_paths, output_pdf_path):
             )
         return True
     except Exception as e:
-        print(f"Error combining images to PDF: {str(e)}")
+        app.logger.error(f"Error combining images to PDF: {str(e)}")
         return False
+
+@app.route('/fonts')
+def font_selector():
+    fonts = get_available_fonts()
+    return render_template('font_selector.html', fonts=fonts)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     try:
         if request.method == 'POST':
-            pdf_file = request.files['pdf']
-            font_name = request.form.get('font')
-            font_size = int(request.form.get('fontSize', 30))
-            ink_color = request.form.get('inkColor', '#000000')
-            
-            if pdf_file and font_name:
-                pdf_filename = secure_filename(pdf_file.filename)
-                pdf_path = os.path.join(UPLOAD_FOLDER, pdf_filename)
-                pdf_file.save(pdf_path)
-
-                # Get text from PDF with preserved formatting
-                pages_text = pdf_to_text(pdf_path)
-                image_paths = []
-                output_files = []
-
-                # Generate images for each page
-                for i, page_paragraphs in enumerate(pages_text):
-                    # Join paragraphs with proper spacing
-                    page_text = '\n'.join(page_paragraphs)
+            # Check if we have a file upload
+            if 'pdf' in request.files:
+                pdf_file = request.files['pdf']
+                if pdf_file.filename == '':
+                    return render_template('index.html', error="No file selected")
                     
-                    image_path = os.path.join(OUTPUT_FOLDER, f"handwritten_page_{i + 1}.png")
-                    text_to_handwritten_image(
-                        page_text, 
-                        font_name, 
-                        image_path,
-                        font_size=font_size,
-                        ink_color=ink_color
-                    )
-                    image_paths.append(image_path)
-                    output_files.append(f"/download/{os.path.basename(image_path)}")
+                font_name = request.form.get('font')
+                font_size = int(request.form.get('fontSize', 30))
+                ink_color = request.form.get('inkColor', '#000000')
+                
+                if pdf_file and font_name:
+                    pdf_filename = secure_filename(pdf_file.filename)
+                    pdf_path = os.path.join(UPLOAD_FOLDER, pdf_filename)
+                    pdf_file.save(pdf_path)
 
-                # Combine images into a single PDF
-                output_pdf_path = os.path.join(OUTPUT_FOLDER, "handwritten_document.pdf")
-                if combine_images_to_pdf(image_paths, output_pdf_path):
-                    output_files.append(f"/download/handwritten_document.pdf")
+                    # Get text from PDF with preserved formatting
+                    pages_text = pdf_to_text(pdf_path)
+                    image_paths = []
+                    output_files = []
 
-            return render_template('success.html', files=output_files)
+                    # Generate images for each page
+                    for i, page_paragraphs in enumerate(pages_text):
+                        # Join paragraphs with proper spacing
+                        page_text = '\n'.join(page_paragraphs)
+                        
+                        image_path = os.path.join(OUTPUT_FOLDER, f"handwritten_page_{i + 1}.png")
+                        text_to_handwritten_image(
+                            page_text, 
+                            font_name, 
+                            image_path,
+                            font_size=font_size,
+                            ink_color=ink_color
+                        )
+                        image_paths.append(image_path)
+                        output_files.append(f"/download/{os.path.basename(image_path)}")
+
+                    # Combine images into a single PDF
+                    output_pdf_path = os.path.join(OUTPUT_FOLDER, "handwritten_document.pdf")
+                    if combine_images_to_pdf(image_paths, output_pdf_path):
+                        output_files.append(f"/download/handwritten_document.pdf")
+
+                    return render_template('success.html', files=output_files)
         
         return render_template('index.html')
     except Exception as e:
         app.logger.error(f"Error in index route: {str(e)}")
-        return f"An error occurred: {str(e)}", 500
+        return render_template('index.html', error=f"An error occurred: {str(e)}")
 
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True)
 
+@app.route('/text-to-handwritten', methods=['GET', 'POST'])
+def text_to_handwritten():
+    if request.method == 'POST':
+        try:
+            # Get form data
+            custom_text = request.form.get('custom_text', '')
+            font_name = request.form.get('font')
+            font_size = int(request.form.get('fontSize', 30))
+            ink_color = request.form.get('inkColor', '#000000')
+            
+            if not custom_text or not font_name:
+                return render_template('text_to_handwritten.html', 
+                                      error="Please provide both text and select a font")
+            
+            # Generate a unique filename for the output
+            unique_id = str(uuid.uuid4())[:8]
+            image_path = os.path.join(OUTPUT_FOLDER, f"handwritten_text_{unique_id}.png")
+            
+            # Convert text to handwritten image
+            text_to_handwritten_image(
+                custom_text,
+                font_name,
+                image_path,
+                font_size=font_size,
+                ink_color=ink_color
+            )
+            
+            # Generate PDF from the image
+            pdf_path = os.path.join(OUTPUT_FOLDER, f"handwritten_text_{unique_id}.pdf")
+            combine_images_to_pdf([image_path], pdf_path)
+            
+            # Return success page with download links
+            output_files = [
+                f"/download/handwritten_text_{unique_id}.png",
+                f"/download/handwritten_text_{unique_id}.pdf"
+            ]
+            
+            return render_template('success.html', files=output_files)
+        
+        except Exception as e:
+            app.logger.error(f"Error processing text: {str(e)}")
+            return render_template('text_to_handwritten.html', error=f"An error occurred: {str(e)}")
+    
+    # GET request
+    return render_template('text_to_handwritten.html')
+
 if __name__ == '__main__':
-    # Use environment variable for port
-    port = int(os.environ.get('PORT', 10000))
-    app.run(host='0.0.0.0', port=port)
+    # For development purposes
+    app.run(host='0.0.0.0', port=5000, debug=True)
