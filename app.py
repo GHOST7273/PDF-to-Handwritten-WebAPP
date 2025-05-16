@@ -242,6 +242,21 @@ def generate_font_preview(font_path, output_path, text="The quick brown fox jump
     except Exception as e:
         app.logger.error(f"Error generating preview for {font_path}: {str(e)}")
 
+def generate_final_image(text_image_path, layout_choice, custom_bg_path=None):
+    #Load chosen background
+    if layout_choice == "custom" and custom_bg_path:
+        bg=Image.open(custom_bg_path)
+    else:
+        bg=Image.open(f"layouts/{layout_choice}.jpg")
+
+    text_img = Image.open(text_image_path)
+
+    bg = bg.resize(text_img.size)
+
+    final_img=Image.alpha_composite(bg.convert('RGBA'), text_img.convert('RGBA'))
+
+    return final_img
+
 def combine_images_to_pdf(image_paths, output_pdf_path):
     """Combine multiple images into a single PDF file"""
     try:
@@ -265,6 +280,30 @@ def combine_images_to_pdf(image_paths, output_pdf_path):
     except Exception as e:
         app.logger.error(f"Error combining images to PDF: {str(e)}")
         return False
+    
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+@app.route('/disclaimer')
+def disclaimer():
+    return render_template("disclaimer.html")
+
+@app.route('/privacypolicy')
+def privacypolicy():
+    return render_template('privacypolicy.html')
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
 
 @app.route('/fonts')
 def font_selector():

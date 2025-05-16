@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+  </style>
+</head>
+<body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+        </div>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="/">Main</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/disclaimer">Disclaimer</a></li>
+          <li><a href="/privacypolicy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms</a></li>
+        </ul>
+      </nav>
+    </header>
+  <div class="container">
+    <h1>About Us</h1>
+    <p>
+      Welcome to <strong>PDF to Handwritten</strong> — a simple and efficient tool designed to convert your typed PDF documents into realistic handwritten-style text.
+    </p>
+    <p>
+      We created this platform to help students, educators, and professionals save time and effort while keeping that classic handwritten feel. Whether you're submitting handwritten assignments, preparing notes, or just want to personalize your digital documents, we've got you covered.
+    </p>
+    <p>
+      Our tool ensures fast, reliable conversion while respecting your privacy — we don’t store any uploaded documents. It's all about simplicity, speed, and style.
+    </p>
+    <p>
+      Thanks for choosing us!
+      <br>
+      —GHOST
+    </p>
+  </div>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded",() => {
+      const toggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+
+      toggle.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+    });
+  </script>
+  <footer>
+    <p>&copy; 2025 PDF to Handwritten | GHOST LLP. <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms</a></p>
+  </footer>
+
+
+  
+</body>
+</html>

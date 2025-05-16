@@ -8,6 +8,24 @@
     <meta name="description" content="Convert PDFs to handwritten text with customizable fonts">
 </head>
 <body data-bs-theme="dark">
+    <header>    
+        <!-- ✅ Navbar moved outside header -->
+        <nav class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+            </div>
+            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/about">About</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/disclaimer">Disclaimer</a></li>
+                <li><a href="/privacypolicy">Privacy Policy</a></li>
+                <li><a href="/terms">Terms</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
         <h2 class="mt-4 mb-4">Convert PDF to Handwritten</h2>
         
@@ -70,6 +88,15 @@
                 <a href="{{ url_for('text_to_handwritten') }}" class="btn btn-primary mt-2">Go to Text Editor</a>
             </div>
         </div>
+
+        <select id ="layoutSelector">
+            <option value="ruled">Ruled</option>
+            <option value="grid">Grid</option>
+            <option value="dots">Dotted</option>
+            <option value="blank">Blank</option>
+            <option value="custom">Upload Background</option>
+        </select>
+        <input type="file" id="customBackgroud" style="display:none;"/>
         
         <div class="loading d-none text-center my-4">
             <div class="spinner-border text-primary" role="status">
@@ -131,6 +158,19 @@
         document.getElementById('convertForm').addEventListener('submit', function() {
             document.querySelector('.loading').classList.remove('d-none');
         });
+
+        document.addEventListener("DOMContentLoaded",() => {
+            const toggle = document.getElementById('menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+
+            toggle.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+        });
+    });
     </script>
+
+    <footer>
+        <p>&copy; 2025 PDF to Handwritten | GHOST LLP. <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms</a></p>
+    </footer>
 </body>
 </html>

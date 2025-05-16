@@ -1,0 +1,128 @@
+/* Match the design style of the existing Render web app */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  header {
+    background: #1f1f1f;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .logo img {
+    height: 80px;
+  }
+  
+  h1 {
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+  
+  .navbar {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 100vw;
+    background-color:#1f1f1f;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    color: black;
+    z-index: 2000;
+  }
+
+  nav ul li a {
+    color: #999;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    z-index: 2000;
+  }
+
+  nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-toggle {
+    display: none;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 2000;
+  }
+  
+  main h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  
+  .post {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+  }
+  
+  .post h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .post .date {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .post a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .post a:hover {
+    text-decoration: underline;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+
+  
