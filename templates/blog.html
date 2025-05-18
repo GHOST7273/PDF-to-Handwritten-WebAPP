@@ -13,11 +13,14 @@
         <div class="logo">
           <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
         </div>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
         <ul class="nav-links" id="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
-          <li><a href="/blog" class="active">Blog</a></li>
           <li><a href="/contact">Contact</a></li>
+          <li><a href="/disclaimer">Disclaimer</a></li>
+          <li><a href="/privacypolicy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms</a></li>
         </ul>
       </nav>
   </header>
@@ -28,23 +31,42 @@
       <h3>5 Smart Uses for Handwritten Notes</h3>
       <p class="date">May 14, 2025</p>
       <p>Handwritten notes have a personal touch and visual memorability. Learn how to apply them in academics, journaling, gift letters, and more...</p>
-      <a href="#">Read more</a>
+      <a href="/blog1">Read more</a>
     </div>
 
     <div class="blog-post">
       <h3>Why Students Love This Converter</h3>
       <p class="date">May 10, 2025</p>
       <p>With tight deadlines and academic stress, students need quick solutions. This tool lets them create realistic handwritten notes in minutes.</p>
-      <a href="#">Read more</a>
+      <a href="/blog2">Read more</a>
     </div>
 
     <div class="blog-post">
       <h3>Behind the Scenes: How It Works</h3>
       <p class="date">May 5, 2025</p>
       <p>Ever wondered how text transforms into handwriting? Here's a peek into the backend logic using Python, Flask, and custom fonts.</p>
-      <a href="#">Read more</a>
+      <a href="/blog3">Read more</a>
+    </div>
+
+    <div class="blog-post">
+      <h3>From Typed to Tangible: Why Handwriting Still Matters</h3>
+      <p class="date">May 1,2025</p>
+      <p>In a world dominated by screens, notifications, and voice commands, handwriting might seem like a relic of the past. </p>
+      <a href="/blog4">Read more</a>
     </div>
   </main>
+
+  <script>
+
+      document.addEventListener("DOMContentLoaded",() => {
+        const toggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        toggle.addEventListener('click',() => {
+          navLinks.classList.toggle('show');
+        });
+      });
+  </script>
 
   <footer>
     <div class="container">

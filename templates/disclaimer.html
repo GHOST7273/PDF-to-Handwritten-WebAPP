@@ -1,9 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head><title>Disclaimer</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie-edge" />
+  <title>Disclaimer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='disclaimer.css') }}" />
+</head>
 <body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+      </div>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacypolicy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms</a></li>
+      </ul>
+    </nav>
+  </header>
   <h1>Disclaimer</h1>
   <p>This tool is for educational purposes. We do not encourage dishonest or unethical use such as cheating or forgery.</p>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded",() => {
+      const toggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+
+      toggle.addEventListener('click',() => {
+        navLinks.classList.toggle('show');
+      });
+    });
+  </script>
+
     <footer>
         <p>&copy; 2025 PDF to Handwritten | GHOST LLP. <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms</a></p>
     </footer>

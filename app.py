@@ -289,6 +289,22 @@ def about():
 def blog():
     return render_template('blog.html')
 
+@app.route('/blog1')
+def blog1():
+    return render_template('blog1.html')
+
+@app.route('/blog2')
+def blog2():
+    return render_template('blog2.html')
+
+@app.route('/blog3')
+def blog3():
+    return render_template('blog3.html')
+
+@app.route('/blog4')
+def blog4():
+    return render_template('blog4.html')
+
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
@@ -299,11 +315,11 @@ def disclaimer():
 
 @app.route('/privacypolicy')
 def privacypolicy():
-    return render_template('privacypolicy.html')
+    return render_template("privacypolicy.html")
 
 @app.route('/terms')
 def terms():
-    return render_template('terms.html')
+    return render_template("terms.html")
 
 @app.route('/fonts')
 def font_selector():
