@@ -9,7 +9,7 @@ import fitz  # PyMuPDF
 from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
-import datetime
+from datetime import datetime
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
