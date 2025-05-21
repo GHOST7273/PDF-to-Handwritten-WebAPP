@@ -3,12 +3,13 @@ import os
 import re
 import uuid
 import logging
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
+from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify, Response
 from werkzeug.utils import secure_filename
 import fitz  # PyMuPDF
 from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
+import datetime
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -320,6 +321,32 @@ def privacypolicy():
 @app.route('/googledb73db056fd8e0dc.html')
 def google_verification():
     return render_template('googledb73db056fd8e0dc.html')
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    pages = []
+    today = datetime.now().date().isoformat()
+
+    # ➤ Static URLs (no route parameters)
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith('/static'):
+            url = url_for(rule.endpoint, _external=True)
+            pages.append(f"""
+    <url>
+        <loc>{url}</loc>
+        <lastmod>{today}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>""")
+
+    
+    # Final XML output
+    sitemap_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{''.join(pages)}
+</urlset>"""
+
+    return Response(sitemap_xml, mimetype='application/xml')
 
 @app.route('/terms')
 def terms():
