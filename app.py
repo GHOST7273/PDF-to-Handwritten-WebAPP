@@ -317,6 +317,10 @@ def disclaimer():
 def privacypolicy():
     return render_template("privacypolicy.html")
 
+@app.route('/googledb73db056fd8e0dc.html')
+def google_verification():
+    return render_template('googledb73db056fd8e0dc.html')
+
 @app.route('/terms')
 def terms():
     return render_template("terms.html")
