@@ -357,6 +357,11 @@ def sitemap():
 
     return Response(sitemap_xml, mimetype='application/xml')
 
+@app.route('/0f5f08bd642d45c39d3210ecb16a89d8.txt')
+def indexnow_key():
+    content = """0f5f08bd642d45c39d3210ecb16a89d8"""
+    return Response(content, mimetype='text/plain')
+
 @app.route('/terms')
 def terms():
     return render_template("terms.html")
