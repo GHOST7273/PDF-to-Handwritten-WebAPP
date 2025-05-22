@@ -322,6 +322,15 @@ def privacypolicy():
 def google_verification():
     return render_template('googledb73db056fd8e0dc.html')
 
+@app.route('/robots.txt', methods=['GET'])
+def robots_txt():
+    robots_content = """User-agent: *
+Disallow:
+
+Sitemap: https://www.text2handwritten.com/sitemap.xml
+"""
+    return Response(robots_content, mimetype='text/plain')
+
 @app.route('/sitemap.xml', methods=['GET'])
 def sitemap():
     pages = []
