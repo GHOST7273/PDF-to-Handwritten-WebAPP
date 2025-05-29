@@ -3,8 +3,16 @@
 <head>
     <title>PDF to Handwriting Converter - Turn Your Notes Into Real Handwriting</title>
     <meta name="description" content="Easily convert PDF notes into beautiful handwritten text online. Choose from 10+ handwriting fonts and preview in real-time. Perfect for students & creatives.">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" as="style">
+    
+    <!-- Load stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet">
+    
+    <!-- Meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Convert PDFs to handwritten text with customizable fonts">
     <meta name="keywords" content="pdf to handwriting, convert pdf to handwritten, handwritten font generator, handwritten notes from pdf, text to handwriting online">
@@ -25,8 +33,6 @@
     <meta property="og:image" content="{{ url_for('static', filename='og-image.jpg') }}">
     <meta property="og:url" content="https://www.text2handwritten.com">
     <meta name="twitter:card" content="summary_large_image">
-
-
 </head>
 <body data-bs-theme="dark">
     <header>    
@@ -137,90 +143,7 @@
         </div>
     </div>
 
-    <script>
-        const fontSelect = document.getElementById('fontSelect');
-        const previewText = document.getElementById('previewText');
-        const fontSize = document.getElementById('fontSize');
-        const fontSizeValue = document.getElementById('fontSizeValue');
-        const inkColor = document.getElementById('inkColor');
-        const pdfBtn = document.getElementById('pdfBtn');
-        const textBtn = document.getElementById('textBtn');
-        const pdfSection = document.getElementById('pdfSection');
-        const textSection = document.getElementById('textSection');
-
-        // Toggle between PDF and Text modes
-        pdfBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            pdfBtn.classList.add('active');
-            textBtn.classList.remove('active');
-            pdfSection.classList.add('active');
-            textSection.classList.remove('active');
-        });
-
-        textBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            textBtn.classList.add('active');
-            pdfBtn.classList.remove('active');
-            textSection.classList.add('active');
-            pdfSection.classList.remove('active');
-        });
-
-        function updatePreview() {
-            const selectedFont = fontSelect.value;
-            if (selectedFont) {
-                previewText.style.fontFamily = selectedFont;
-                previewText.style.fontSize = `${fontSize.value}px`;
-                previewText.style.color = inkColor.value;
-            }
-        }
-
-        fontSelect.addEventListener('change', updatePreview);
-        fontSize.addEventListener('input', () => {
-            fontSizeValue.textContent = `${fontSize.value}px`;
-            updatePreview();
-        });
-        inkColor.addEventListener('input', updatePreview);
-
-        document.getElementById('convertForm').addEventListener('submit', function() {
-            document.querySelector('.loading').classList.remove('d-none');
-        });
-
-        document.addEventListener("DOMContentLoaded",() => {
-            const toggle = document.getElementById('menu-toggle');
-            const navLinks = document.getElementById('nav-links');
-
-            toggle.addEventListener('click', () => {
-                navLinks.classList.toggle('show');
-        });
-
-        // Layout selector handling
-        const layoutSelector = document.getElementById('layoutSelector');
-        const layoutPreview = document.getElementById('layoutPreview');
-        const customBackground = document.getElementById('customBackgroud');
-
-        layoutSelector.addEventListener('change', function() {
-            const selectedLayout = this.value;
-            layoutPreview.className = 'layout-preview ' + selectedLayout;
-            
-            if (selectedLayout === 'custom') {
-                customBackground.style.display = 'block';
-            } else {
-                customBackground.style.display = 'none';
-            }
-        });
-
-        customBackground.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    layoutPreview.style.backgroundImage = `url(${e.target.result})`;
-                    layoutPreview.style.backgroundSize = 'cover';
-                }
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-    });
-    </script>
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
 
     <section class="faq mt-5">
         <h2>FAQs - PDF to Handwriting Converter</h2>

@@ -2,8 +2,16 @@
 <html>
 <head>
     <title>Text to Handwritten</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" as="style">
+    
+    <!-- Load stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet">
+    
+    <!-- Meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Convert custom text to handwritten style with various font options">
 </head>
@@ -93,73 +101,7 @@
         </div>
     </div>
 
-    <script>
-        const fontSelect = document.getElementById('fontSelect');
-        const previewText = document.getElementById('previewText');
-        const fontSize = document.getElementById('fontSize');
-        const fontSizeValue = document.getElementById('fontSizeValue');
-        const inkColor = document.getElementById('inkColor');
-        const customText = document.getElementById('custom_text');
-
-        function updatePreview() {
-            const selectedFont = fontSelect.value;
-            if (selectedFont) {
-                previewText.style.fontFamily = selectedFont;
-                previewText.style.fontSize = `${fontSize.value}px`;
-                previewText.style.color = inkColor.value;
-                
-                // Update preview text with first 50 characters from user input
-                const userText = customText.value;
-                if (userText.length > 0) {
-                    const previewTextContent = userText.length > 50 
-                        ? userText.substring(0, 50) + '...' 
-                        : userText;
-                    previewText.textContent = previewTextContent;
-                } else {
-                    previewText.textContent = "The quick brown fox jumps over the lazy dog";
-                }
-            }
-        }
-
-        fontSelect.addEventListener('change', updatePreview);
-        fontSize.addEventListener('input', () => {
-            fontSizeValue.textContent = `${fontSize.value}px`;
-            updatePreview();
-        });
-        inkColor.addEventListener('input', updatePreview);
-        customText.addEventListener('input', updatePreview);
-
-        document.getElementById('textForm').addEventListener('submit', function() {
-            document.querySelector('.loading').classList.remove('d-none');
-        });
-
-        // Layout selector handling
-        const layoutSelector = document.getElementById('layoutSelector');
-        const layoutPreview = document.getElementById('layoutPreview');
-        const customBackground = document.getElementById('customBackgroud');
-
-        layoutSelector.addEventListener('change', function() {
-            const selectedLayout = this.value;
-            layoutPreview.className = 'layout-preview ' + selectedLayout;
-            
-            if (selectedLayout === 'custom') {
-                customBackground.style.display = 'block';
-            } else {
-                customBackground.style.display = 'none';
-            }
-        });
-
-        customBackground.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    layoutPreview.style.backgroundImage = `url(${e.target.result})`;
-                    layoutPreview.style.backgroundSize = 'cover';
-                }
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
     <footer>
         <p>&copy; 2025 PDF to Handwritten | GHOST LLP. <a href="/privacypolicy">Privacy Policy</a> | <a href="/terms">Terms</a></p>
     </footer>
