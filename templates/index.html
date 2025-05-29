@@ -4,13 +4,16 @@
     <title>PDF to Handwriting Converter - Turn Your Notes Into Real Handwriting</title>
     <meta name="description" content="Easily convert PDF notes into beautiful handwritten text online. Choose from 10+ handwriting fonts and preview in real-time. Perfect for students & creatives.">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" as="style">
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
     
-    <!-- Load stylesheets -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet">
+    <!-- Defer non-critical CSS -->
+    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></noscript>
+    
+    <!-- Defer Google Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Caveat&family=Satisfy&family=Pacifico&family=Indie+Flower&family=Architects+Daughter&family=Shadows+Into+Light&family=Kalam&family=Gloria+Hallelujah&family=Homemade+Apple&display=swap" rel="stylesheet"></noscript>
     
     <!-- Meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,22 +27,21 @@
     <meta name="alexa" content="index, follow"> 
     <meta name="sitemap" content="https://pdftohandwritten.com/sitemap.xml">
     <meta name="google-site-verification" content="google-site-verification=google-site-verification">
-    <meta name="google-site-verification" content="google-site-verification=google-site-verification">
-    <meta name="google-site-verification" content="google-site-verification=google-site-verification">
-    <meta name="google-site-verification" content="google-site-verification=google-site-verification">
-    <meta name="google-site-verification" content="google-site-verification=google-site-verification">
     <meta property="og:title" content="Convert PDF to Handwriting | Free Online Tool">
     <meta property="og:description" content="Turn your PDF notes into realistic handwritten format using our free tool.">
     <meta property="og:image" content="{{ url_for('static', filename='og-image.jpg') }}">
     <meta property="og:url" content="https://www.text2handwritten.com">
     <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Load non-critical JavaScript -->
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
 </head>
 <body data-bs-theme="dark">
     <header>    
         <!-- ✅ Navbar moved outside header -->
         <nav class="navbar">
             <div class="logo">
-                <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+                <img src="{{ url_for('static', filename='ghostlogo.webp') }}" alt="GHOST" width="75" height="75">
             </div>
             <div class="menu-toggle" id="menu-toggle">&#9776;</div>
             <ul class="nav-links" id="nav-links">

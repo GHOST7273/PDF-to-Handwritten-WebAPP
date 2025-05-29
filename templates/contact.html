@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Contact Us</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}" />
+  
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="preload" href="{{ url_for('static', filename='contact.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}"></noscript>
 </head>
 <body>
   <header>
     <nav class="navbar">
       <div class="logo">
-        <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+        <img src="{{ url_for('static', filename='ghostlogo.webp') }}" alt="GHOST" width="75" height="75">
       </div>
       <div class="menu-toggle" id="menu-toggle">&#9776;</div>
       <ul class="nav-links" id="nav-links">
@@ -24,7 +30,7 @@
       </ul>
     </nav>
   </header>
-  <p>Have questions or suggestions? Email us at <a href="ghost727e@gmail.com">ghost727e@gmail.com</a></p>
+  <p>Have questions or suggestions? Email us at <a href="mailto:ghost727e@gmail.com">ghost727e@gmail.com</a></p>
 
   <script>
 

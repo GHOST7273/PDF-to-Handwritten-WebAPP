@@ -4,14 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
-  </style>
+  
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="preload" href="{{ url_for('static', filename='about.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}"></noscript>
 </head>
 <body>
     <header>
       <nav class="navbar">
         <div class="logo">
-          <img src="{{ url_for('static', filename='ghostlogo.jpg') }}" alt="GHOST">
+          <img src="{{ url_for('static', filename='ghostlogo.webp') }}" alt="GHOST" width="75" height="75">
         </div>
         <div class="menu-toggle" id="menu-toggle">&#9776;</div>
         <ul class="nav-links" id="nav-links">
@@ -33,7 +38,7 @@
       We created this platform to help students, educators, and professionals save time and effort while keeping that classic handwritten feel. Whether you're submitting handwritten assignments, preparing notes, or just want to personalize your digital documents, we've got you covered.
     </p>
     <p>
-      Our tool ensures fast, reliable conversion while respecting your privacy — we don’t store any uploaded documents. It's all about simplicity, speed, and style.
+      Our tool ensures fast, reliable conversion while respecting your privacy — we don't store any uploaded documents. It's all about simplicity, speed, and style.
     </p>
     <p>
       Thanks for choosing us!
