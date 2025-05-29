@@ -100,6 +100,19 @@
                     </div>
                 </div>
 
+                <div class="form-group mb-3">
+                    <label class="form-label">Page Layout:</label>
+                    <select id="layoutSelector" name="layout" class="form-select">
+                        <option value="ruled">Ruled Paper</option>
+                        <option value="grid">Grid Paper</option>
+                        <option value="dots">Dotted Paper</option>
+                        <option value="blank">Blank Paper</option>
+                        <option value="custom">Custom Background</option>
+                    </select>
+                    <div id="layoutPreview" class="layout-preview ruled mt-2"></div>
+                    <input type="file" id="customBackgroud" name="customBackground" style="display:none;"/>
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100" id="convertBtn">Convert</button>
             </form>
         </div>
@@ -111,15 +124,6 @@
             </div>
         </div>
 
-        <select id ="layoutSelector">
-            <option value="ruled">Ruled</option>
-            <option value="grid">Grid</option>
-            <option value="dots">Dotted</option>
-            <option value="blank">Blank</option>
-            <option value="custom">Upload Background</option>
-        </select>
-        <input type="file" id="customBackgroud" style="display:none;"/>
-        
         <div class="loading d-none text-center my-4">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -187,6 +191,33 @@
 
             toggle.addEventListener('click', () => {
                 navLinks.classList.toggle('show');
+        });
+
+        // Layout selector handling
+        const layoutSelector = document.getElementById('layoutSelector');
+        const layoutPreview = document.getElementById('layoutPreview');
+        const customBackground = document.getElementById('customBackgroud');
+
+        layoutSelector.addEventListener('change', function() {
+            const selectedLayout = this.value;
+            layoutPreview.className = 'layout-preview ' + selectedLayout;
+            
+            if (selectedLayout === 'custom') {
+                customBackground.style.display = 'block';
+            } else {
+                customBackground.style.display = 'none';
+            }
+        });
+
+        customBackground.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    layoutPreview.style.backgroundImage = `url(${e.target.result})`;
+                    layoutPreview.style.backgroundSize = 'cover';
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
         });
     });
     </script>

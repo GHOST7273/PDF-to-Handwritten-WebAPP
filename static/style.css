@@ -543,22 +543,71 @@ nav ul li a:hover {
     cursor: pointer;
 }
 
-#layoutSelector:hover {
-    border-color: #357abd;
+#layoutSelector option {
+    padding: 10px;
+    font-size: 1rem;
 }
 
-#customBackgroud {
+#layoutSelector option[value="ruled"] {
+    background-image: linear-gradient(#000 1px, transparent 1px);
+    background-size: 100% 30px;
+    background-color: white;
+    padding: 20px;
+}
+
+#layoutSelector option[value="grid"] {
+    background-image: linear-gradient(#000 1px, transparent 1px),
+                     linear-gradient(90deg, #000 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: white;
+    padding: 20px;
+}
+
+#layoutSelector option[value="dots"] {
+    background-image: radial-gradient(#000 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: white;
+    padding: 20px;
+}
+
+#layoutSelector option[value="blank"] {
+    background-color: white;
+    padding: 20px;
+}
+
+#layoutSelector option[value="custom"] {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* Layout preview container */
+.layout-preview {
     margin: 1rem 0;
-    padding: 0.8rem;
-    border: 2px dashed var(--primary-color);
+    padding: 1rem;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: rgba(74, 144, 226, 0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background-color: white;
+    min-height: 200px;
 }
 
-#customBackgroud:hover {
-    background-color: rgba(74, 144, 226, 0.2);
+.layout-preview.ruled {
+    background-image: linear-gradient(#000 1px, transparent 1px);
+    background-size: 100% 30px;
+}
+
+.layout-preview.grid {
+    background-image: linear-gradient(#000 1px, transparent 1px),
+                     linear-gradient(90deg, #000 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.layout-preview.dots {
+    background-image: radial-gradient(#000 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.layout-preview.blank {
+    background-color: white;
 }
 
 /* FAQ section styles */

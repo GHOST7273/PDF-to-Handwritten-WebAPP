@@ -142,7 +142,7 @@ def download_google_font(font_name):
         app.logger.error(f"Error downloading font {font_name}: {str(e)}")
     return None
 
-def text_to_handwritten_image(text, font_name, output_path, image_width=800, line_height=40, font_size=30, ink_color="#000000"):
+def text_to_handwritten_image(text, font_name, output_path, image_width=800, line_height=40, font_size=30, ink_color="#000000", layout="ruled"):
     """Convert text to handwritten image with preserved formatting"""
     try:
         # Check if font exists, if not download it
@@ -180,9 +180,38 @@ def text_to_handwritten_image(text, font_name, output_path, image_width=800, lin
         image_width = max(image_width, max_width + padding * 2)
         image_height = total_height + (len(paragraphs) - 1) * paragraph_spacing + padding * 2
         
-        # Create a white background image
-        image = Image.new('RGB', (int(image_width), int(image_height)), color='white')
-        draw = ImageDraw.Draw(image)
+        # Create background based on layout
+        if layout == "ruled":
+            # Create ruled paper background
+            image = Image.new('RGB', (int(image_width), int(image_height)), color='white')
+            draw = ImageDraw.Draw(image)
+            # Draw horizontal lines
+            line_spacing = 30
+            for y in range(padding, int(image_height), line_spacing):
+                draw.line([(padding, y), (image_width - padding, y)], fill='#000000', width=1)
+        elif layout == "grid":
+            # Create grid paper background
+            image = Image.new('RGB', (int(image_width), int(image_height)), color='white')
+            draw = ImageDraw.Draw(image)
+            # Draw grid lines
+            grid_spacing = 20
+            for x in range(padding, int(image_width), grid_spacing):
+                draw.line([(x, padding), (x, image_height - padding)], fill='#000000', width=1)
+            for y in range(padding, int(image_height), grid_spacing):
+                draw.line([(padding, y), (image_width - padding, y)], fill='#000000', width=1)
+        elif layout == "dots":
+            # Create dotted paper background
+            image = Image.new('RGB', (int(image_width), int(image_height)), color='white')
+            draw = ImageDraw.Draw(image)
+            # Draw dots
+            dot_spacing = 20
+            for x in range(padding, int(image_width), dot_spacing):
+                for y in range(padding, int(image_height), dot_spacing):
+                    draw.point((x, y), fill='#000000')
+        else:
+            # Create blank paper background
+            image = Image.new('RGB', (int(image_width), int(image_height)), color='white')
+            draw = ImageDraw.Draw(image)
         
         # Draw the text with preserved formatting
         y = padding
@@ -408,6 +437,7 @@ def index():
                 font_name = request.form.get('font')
                 font_size = int(request.form.get('fontSize', 30))
                 ink_color = request.form.get('inkColor', '#000000')
+                layout = request.form.get('layout', 'ruled')
                 
                 if pdf_file and font_name:
                     pdf_filename = secure_filename(pdf_file.filename)
@@ -430,7 +460,8 @@ def index():
                             font_name, 
                             image_path,
                             font_size=font_size,
-                            ink_color=ink_color
+                            ink_color=ink_color,
+                            layout=layout
                         )
                         image_paths.append(image_path)
                         output_files.append(f"/download/{os.path.basename(image_path)}")
@@ -460,6 +491,7 @@ def text_to_handwritten():
             font_name = request.form.get('font')
             font_size = int(request.form.get('fontSize', 30))
             ink_color = request.form.get('inkColor', '#000000')
+            layout = request.form.get('layout', 'ruled')
             
             if not custom_text or not font_name:
                 return render_template('text_to_handwritten.html', 
@@ -475,7 +507,8 @@ def text_to_handwritten():
                 font_name,
                 image_path,
                 font_size=font_size,
-                ink_color=ink_color
+                ink_color=ink_color,
+                layout=layout
             )
             
             # Generate PDF from the image
