@@ -36,6 +36,23 @@ body {
     margin: 2rem auto;
 }
 
+h1 {
+    color: var(--secondary-color);
+    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.lead {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
 h2 {
     color: var(--secondary-color);
     text-align: center;
@@ -512,4 +529,61 @@ nav ul li a:hover {
     .download-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Layout selector styles */
+#layoutSelector {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    margin: 1rem 0;
+    background-color: white;
+    cursor: pointer;
+}
+
+#layoutSelector:hover {
+    border-color: #357abd;
+}
+
+#customBackgroud {
+    margin: 1rem 0;
+    padding: 0.8rem;
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    background-color: rgba(74, 144, 226, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#customBackgroud:hover {
+    background-color: rgba(74, 144, 226, 0.2);
+}
+
+/* FAQ section styles */
+.faq {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.faq h2 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.faq h3 {
+    color: var(--primary-color);
+    margin: 1rem 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.faq p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }

@@ -362,6 +362,30 @@ def indexnow_key():
     content = """0f5f08bd642d45c39d3210ecb16a89d8"""
     return Response(content, mimetype='text/plain')
 
+def ping_indexnow(url, key, key_location):
+    api_endpoint = "https://api.indexnow.org/indexnow"
+    payload = {
+        "host": "www.text2handwritten.com",
+        "key": key,
+        "keyLocation": key_location,
+        "urlList": [url]
+    }
+    try:
+        response = requests.post(api_endpoint, json=payload)
+        return response.status_code, response.text
+    except Exception as e:
+        return 500, str(e)
+
+status, response = ping_indexnow(
+    url="https://www.text2handwritten.com/new-page-url",
+    key="0f5f08bd642d45c39d3210ecb16a89d8",  # your key
+    key_location="https://www.text2handwritten.com/0f5f08bd642d45c39d3210ecb16a89d8.txt"
+)
+
+print("IndexNow Response:", status, response)
+    
+
+
 @app.route('/terms')
 def terms():
     return render_template("terms.html")
