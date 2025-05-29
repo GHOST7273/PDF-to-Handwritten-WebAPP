@@ -165,6 +165,18 @@
 
     <p>Need to convert typed text instead of a PDF? Try our <a href="/text-to-handwritten">Text to Handwritten Tool</a></p>
 
+    <script>
+
+        document.addEventListener("DOMContentLoaded",() => {
+          const toggle = document.getElementById('menu-toggle');
+          const navLinks = document.getElementById('nav-links');
+  
+          toggle.addEventListener('click',() => {
+            navLinks.classList.toggle('show');
+          });
+        });
+    </script>
+
   
 
     <footer>
