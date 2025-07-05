@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text to Handwritten</title>
+  <style>
+    /* Global styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin: 0.8rem 0 0.4rem;
+      font-weight: bold;
+    }
+    select, input[type="color"], textarea {
+      padding: 8px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+    textarea {
+      height: 150px;
+      resize: vertical;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    .preview {
+      border: 1px solid #ddd;
+      padding: 12px;
+      height: 300px;
+      background: #fff url('lined-paper.png') repeat; /* Replace with real paper bg */
+      overflow: auto;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      display: inline-block;
+      background: #27ae60;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-align: center;
+      width: 100%;
+    }
+    .btn:hover {
+      background: #219150;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Text to Handwriting Converter</h1>
+    <label for="txt">Type or paste text here</label>
+    <textarea id="txt" placeholder="Your text..."></textarea>
+
+    <div class="options">
+      <div>
+        <label for="font">Handwriting Font</label>
+        <select id="font">
+          <option>Homemade Apple</option>
+          <option>Caveat</option>
+          <option>Gloria Hallelujah</option>
+          <option>Upload .ttf...</option>
+        </select>
+      </div>
+      <div>
+        <label for="size">Font Size</label>
+        <select id="size">
+          <option>16px</option>
+          <option>20px</option>
+          <option>24px</option>
+          <option>28px</option>
+        </select>
+      </div>
+      <div>
+        <label for="ink">Ink Color</label>
+        <input type="color" id="ink" value="#000000">
+      </div>
+      <div>
+        <label for="paper">Paper Style</label>
+        <select id="paper">
+          <option>Blank</option>
+          <option>Lined</option>
+          <option>Scanned Effect</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="preview" id="preview">
+      Preview will appear here...
+    </div>
+
+    <button class="btn" id="generate">Generate Handwriting</button>
+  </div>
+
+  <script>
+    // Basic preview logic (client-side only)
+    const txt = document.getElementById('txt');
+    const preview = document.getElementById('preview');
+    const font = document.getElementById('font');
+    const size = document.getElementById('size');
+    const ink = document.getElementById('ink');
+    const paper = document.getElementById('paper');
+
+    function updatePreview() {
+      preview.textContent = txt.value;
+      preview.style.fontFamily = font.value.includes('ttf') ? 'serif' : `'${font.value}', cursive`;
+      preview.style.fontSize = size.value;
+      preview.style.color = ink.value;
+      // Simplified paper background simulation
+      preview.style.backgroundImage = paper.value === 'Lined'
+        ? 'repeating-linear-gradient(#fff, #fff 28px, #ddd 28px, #ddd 30px)'
+        : paper.value === 'Scanned Effect'
+          ? 'url("scan-effect.png")'
+          : 'none';
+    }
+
+    txt.addEventListener('input', updatePreview);
+    font.addEventListener('change', updatePreview);
+    size.addEventListener('change', updatePreview);
+    ink.addEventListener('input', updatePreview);
+    paper.addEventListener('change', updatePreview);
+
+    document.getElementById('generate').addEventListener('click', () => {
+      alert('Here you’d submit to server to generate downloadable handwriting image.');
+    });
+  </script>
+</body>
+</html>

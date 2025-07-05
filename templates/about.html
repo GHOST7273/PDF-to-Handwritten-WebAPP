@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us</title>
   
-  <!-- Critical CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
-  
+
   <!-- Defer non-critical CSS -->
   <link rel="preload" href="{{ url_for('static', filename='about.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}"></noscript>

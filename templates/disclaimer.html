@@ -6,9 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie-edge" />
   <title>Disclaimer</title>
   
-  <!-- Critical CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
-  
+
   <!-- Defer non-critical CSS -->
   <link rel="preload" href="{{ url_for('static', filename='disclaimer.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ url_for('static', filename='disclaimer.css') }}"></noscript>

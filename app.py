@@ -335,6 +335,10 @@ def blog3():
 def blog4():
     return render_template('blog4.html')
 
+@app.route('/blog5')
+def blog5():
+    return render_template('blog5.html')
+
 @app.route('/contact')
 def contact():
     return render_template("contact.html")

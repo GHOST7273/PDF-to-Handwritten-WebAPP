@@ -6,9 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>PDF to Handwritten - Blog</title>
   
-  <!-- Critical CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='critical.css') }}">
-  
   <!-- Defer non-critical CSS -->
   <link rel="preload" href="{{ url_for('static', filename='blog.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ url_for('static', filename='blog.css') }}"></noscript>
@@ -33,6 +30,12 @@
 
   <main class="container">
     <h2>Our Blog</h2>
+    <div class="blog-post">
+      <h3>Text to Handwriting Converter</h3>
+      <p class="date">July 5,2025</p>
+      <p>In a world dominated by screens, notifications, and voice commands, handwriting might seem like a relic of the past. </p>
+      <a href="/blog5">Read more</a>
+    </div>
     <div class="blog-post">
       <h3>5 Smart Uses for Handwritten Notes</h3>
       <p class="date">May 14, 2025</p>
