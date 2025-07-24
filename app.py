@@ -3,7 +3,7 @@ import os
 import re
 import uuid
 import logging
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify, Response
+from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify, Response, make_response
 from werkzeug.utils import secure_filename
 import fitz  # PyMuPDF
 from PIL import Image, ImageDraw, ImageFont
@@ -35,6 +35,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 os.makedirs(FONTS_FOLDER, exist_ok=True)
 os.makedirs(FONT_PREVIEWS_FOLDER, exist_ok=True)
+
+@app.after_request
+def apply_clickjacking_protection(response):
+    response.headers["X-Frame-Options"]= "DENY"
+    return response
 
 def clean_text(text):
     """Clean and format the extracted text"""
