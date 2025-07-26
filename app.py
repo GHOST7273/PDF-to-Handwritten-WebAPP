@@ -421,6 +421,10 @@ status, response = ping_indexnow(
 )
 
 print("IndexNow Response:", status, response)
+
+@app.route('/ads.txt')
+def ads():
+    return send_from_directory('static', 'ads.txt', mimetype='text/plain')
     
 
 
