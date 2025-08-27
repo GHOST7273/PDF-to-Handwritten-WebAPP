@@ -344,6 +344,10 @@ def blog4():
 def blog5():
     return render_template('blog5.html')
 
+@app.route('/blog6')
+def blog6():
+    return render_template('blog6.html')
+
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
